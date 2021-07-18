@@ -69,6 +69,35 @@ function updateChannelData(channel) {
     fs.writeFileSync('./channels/channels.json', JSON.stringify(channels_json, null, 2))
 }
 
+function getVideoName(videoId) {
+    return new Promise((resolve, reject) => {
+        youtube.videos.list({
+            key: process.env.TOKEN,
+            part: 'snippet',
+            id: videoId,
+        }).then(response => {
+            console.log("TITEL", response.data.items[0].snippet.title)
+            const title = response.data.items[0].snippet.title
+            resolve(title)
+        }).catch(error => {
+            console.log(error)
+            reject(error)
+        })
+    })
+}
+
+function deleteLastVideoFrom(channelId) {
+    channel = getChannel(channelId)
+    console.log("Channel" , channel)
+    videoName = getVideoName(channel.lastVideoId).then(videoName => {
+        console.log(videoName)
+        var filePath = './podcasts/'+videoName + '.mp3'; 
+        fs.unlinkSync(filePath);
+    })
+    
+    
+}
+
 function run() {
     channels = getAllChannels().channels
     channels.forEach(async channel => {
@@ -79,11 +108,15 @@ function run() {
                     videoId = video.snippet.resourceId.videoId
                     console.log("VideoId", videoId , " Channel:", channel.name )
                     if (channel.lastVideoId != videoId){
+                        deleteLastVideoFrom(channelId)
                         console.log("New VideoId", videoId , " Channel:", channel.name )
                         channel.lastVideoId = videoId
-                        updateChannelData(channel)
-                        var downloader = new Downloader()                        
-                        downloader.download(videoId)
+                        getVideoName(videoId).then((videoName) => {
+                            channel.url = "./podcasts/"+videoName + '.mp3'
+                            updateChannelData(channel)
+                            var downloader = new Downloader()                        
+                            downloader.download(videoId)
+                        })
                     }
                 })
             })
@@ -91,4 +124,6 @@ function run() {
     })
 }
 
-run()
+module.exports = {
+    run
+}
