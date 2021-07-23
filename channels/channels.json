@@ -4,19 +4,22 @@
       "id": "UCesjlAoEgN_Sz_cKTvKEmmw",
       "name": "Doktor Whatson",
       "lastVideoId": "4Paagu6G4qI",
-      "url": "./podcasts/Gibt es Elefanten in der Milchstraße? | Weltraumfakten #2.mp3"
+      "downloaded": true,
+      "url": "./podcasts/Der Anti-Gravity Space-Pen der NASA | Weltraumfakten #2.mp3"
     },
     {
       "id": "UCE2hJ9CYR57BYhk3TjGVG6w",
       "name": "Breaking Lab",
-      "lastVideoId": "3J093qPIo-w",
-      "url": "./podcasts/Update Wellenkraftwerk.mp3"
+      "lastVideoId": "lIkzlq3XTcA",
+      "downloaded": true,
+      "url": "./podcasts/Elektrolyse: Sauberer Wasserstoff für die Zukunft.mp3"
     },
     {
       "id": "UCrt6X6pXNRl5rRxaKbzCrvw",
       "name": "Clixoom Science & Future",
-      "lastVideoId": "p4TsE0xDRjA",
-      "url": "./podcasts/Auf Kollisionskurs - Verteidigungssystem gegen Killer-Asteroiden!.mp3"
+      "lastVideoId": "_aZzNaWwhN8",
+      "downloaded": true,
+      "url": "./podcasts/Wasserreicher Exoplanet in unserer Nachbarschaft! Meilenstein für die Planetenforschung.mp3"
     }
   ]
 }

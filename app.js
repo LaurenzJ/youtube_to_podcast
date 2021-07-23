@@ -6,17 +6,13 @@ const fs = require('fs');
 const youtube = require('./youtube.js')
 
 
-app.get('/', (req, res) => {
-    youtube.run()
-    fs.readFile('./channels/channels.json', 'utf8', (err, data) => {
-        if (err) {
-            res.send(err);
-        } else {
-            obj = JSON.parse(data);
-            res.header("Content-Type",'application/json');
-            res.send(JSON.stringify(obj, null, 4))
-        }
-    })
+app.get('/api', (req, res) => {
+    if(req.query.api_key.trim() === process.env.API_KEY.trim()) {
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(youtube.run(), null, 3));
+    } else {
+        res.end('No access!')
+    }
 })
 
 app.listen(3000, () => {

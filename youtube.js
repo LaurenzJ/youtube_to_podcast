@@ -66,7 +66,7 @@ function updateChannelData(channel) {
             channels_json.channels[i] = channel
         }
     }
-    fs.writeFileSync('./channels/channels.json', JSON.stringify(channels_json, null, 2))
+    fs.writeFileSync('channels/channels.json', JSON.stringify(channels_json, null, 2))
 }
 
 function getVideoName(videoId) {
@@ -100,7 +100,7 @@ function deleteLastVideoFrom(channelId) {
 
 function run() {
     channels = getAllChannels().channels
-    channels.forEach(async channel => {
+    channels.forEach(channel => {
         channelId = channel.id
         getPlaylistId(channelId).then(playlistId => {
             getVideosFromPlaylistId(playlistId).then(videos => {
@@ -113,15 +113,30 @@ function run() {
                         channel.lastVideoId = videoId
                         getVideoName(videoId).then((videoName) => {
                             channel.url = "./podcasts/"+videoName + '.mp3'
+                            channel.downloaded = false
                             updateChannelData(channel)
-                            var downloader = new Downloader()                        
-                            downloader.download(videoId)
+                            
+                            console.log("CHANNEL", channel)
                         })
                     }
                 })
             })
         })
     })
+    console.log("JIMMY")
+    channel = getChannel('UCrt6X6pXNRl5rRxaKbzCrvw')
+    console.log("DOWNLAODED: ", channel.downloaded)
+    channels.forEach(channel => {   
+        console.log("CHANNEL NAME:", channel.name, " | Downloaded: ",  channel.downloaded)
+        if(!channel.downloaded) {
+            var downloader = new Downloader()                        
+            downloader.download(channel.lastVideoId)
+            channel.downloaded = true
+            updateChannelData(channel)
+        }
+    })
+
+    return channels;
 }
 
 module.exports = {
